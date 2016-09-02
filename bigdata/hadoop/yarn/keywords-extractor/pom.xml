@@ -5,14 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>mash.study.bigdata.hadoop</groupId>
-    <artifactId>kw</artifactId>
+    <artifactId>keywords-extractor</artifactId>
     <version>1.0.1</version>
     <packaging>jar</packaging>
-
-    <scm>
-        <connection>scm:git:https://github.com/m-m-g-s/study.git</connection>
-        <url>https://github.com/m-m-g-s/study.git</url>
-    </scm>
 
     <properties>
         <java.version>1.8</java.version>
@@ -73,55 +68,7 @@
     </dependencies>
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>templating-maven-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <id>generate-version-class</id>
-                            <goals>
-                                <goal>filter-sources</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-<!--                <configuration>
-                    <revisionOnScmFailure>UNKNOWN</revisionOnScmFailure>
-                    <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
-                    <doCheck>true</doCheck>
-                    <doUpdate>true</doUpdate>
-                    <providerImplementations>
-                        <svn>javasvn</svn>
-                    </providerImplementations>
-                </configuration>-->
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>create</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <doCheck>true</doCheck>
-                    <doUpdate>true</doUpdate>
-                    <providerImplementations>
-                        <svn>javasvn</svn>
-                    </providerImplementations>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>templating-maven-plugin</artifactId>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -151,7 +98,7 @@
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
-                            <finalName>kw-${version}</finalName>
+                            <finalName>${artifactId}</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                         </configuration>
                     </execution>

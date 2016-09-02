@@ -5,9 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import mmgs.study.bigdata.hadoop.kw.CurrentVersion;
 import mmgs.study.bigdata.hadoop.kw.utils.HdfsManipulator;
-import mmgs.study.bigdata.hadoop.kw.utils.KWConstants;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -23,30 +21,29 @@ import org.apache.hadoop.yarn.util.ConverterUtils;
 import org.apache.hadoop.yarn.util.Records;
 import org.apache.log4j.Logger;
 
+import static mmgs.study.bigdata.hadoop.kw.utils.KWConstants.*;
+
 public class Client {
 
     private static final Logger LOG = Logger.getLogger(Client.class);
 
     private static final HdfsManipulator hdfsManipulator = HdfsManipulator.newInstance();
 
-    private String applicationSourceJar = KWConstants.APPLICATION_NAME + "-" + this.getClass().getPackage().getImplementationVersion() + ".jar";
-
     public static void main(String[] args) throws Exception {
         try {
             Client clientObj = new Client();
-            System.out.println(CurrentVersion.getVersion());
-            clientObj.run(args);
+            clientObj.run();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void run(String[] args) throws Exception {
+    public void run() throws Exception {
         final Path appMasterJarPath = new Path(hdfsManipulator.getFS() + "/" + APPLICATION_FULL_PATH);
 
         LOG.info("Copying executables to HDFS ... ");
         hdfsManipulator.createHdfsDirectory(APPLICATION_DIRECTIRY);
-        hdfsManipulator.copyLocalToHdfs(applicationSourceJar, APPLICATION_FULL_PATH);
+        hdfsManipulator.copyLocalToHdfs(APPLICATION_JAR, APPLICATION_FULL_PATH);
 
         LOG.info("Initializing YARN configuration ... ");
         YarnConfiguration conf = new YarnConfiguration();

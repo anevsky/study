@@ -23,6 +23,8 @@ import org.apache.hadoop.yarn.util.ConverterUtils;
 import org.apache.hadoop.yarn.util.Records;
 import org.apache.log4j.Logger;
 
+import static mmgs.study.bigdata.hadoop.kw.utils.KWConstants.*;
+
 public class ApplicationMaster {
 
     private static final Logger LOG = Logger.getLogger(ApplicationMaster.class);

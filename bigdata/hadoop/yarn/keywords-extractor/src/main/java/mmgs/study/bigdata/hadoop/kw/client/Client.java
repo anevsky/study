@@ -41,6 +41,7 @@ public class Client {
     public void run() throws Exception {
         final Path appMasterJarPath = new Path(hdfsManipulator.getFS() + "/" + APPLICATION_FULL_PATH);
 
+        // TODO: make proper init method
         LOG.info("Copying executables to HDFS ... ");
         hdfsManipulator.createHdfsDirectory(APPLICATION_DIRECTIRY);
         hdfsManipulator.copyLocalToHdfs(APPLICATION_JAR, APPLICATION_FULL_PATH);
@@ -80,6 +81,7 @@ public class Client {
         }
         Apps.addToEnvironment(appMasterEnv, Environment.CLASSPATH.name(), Environment.PWD.$() + File.separator + "*");
 
+        // TODO: set memory and vcores settings via property file
         LOG.info("Setting resource capability");
         Resource capability = Records.newRecord(Resource.class);
         capability.setMemory(256);
@@ -114,5 +116,7 @@ public class Client {
         }
 
         LOG.info("Application completed with status " + appState.toString());
+
+        // TODO: make proper teardown method (cleanup all application directories and jars from hdfs)
     }
 }

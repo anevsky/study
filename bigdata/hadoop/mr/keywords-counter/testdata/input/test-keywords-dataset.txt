@@ -1,0 +1,7 @@
+282825712778	refresheners,air	ON	CPC	BROAD	http://www.smth.com/this_one_is_insignificant_for_a_test_c3100
+282163000927	charger,adapter	ON	CPC	BROAD	http://www.smth.com/this_one_is_insignificant_for_a_test_c4395
+282163098011	auto,accessori	ON	CPC	BROAD	http://www.smth.com/this_one_is_insignificant_for_a_test_c3019
+282163095799	accessoires,voitures,fr	ON	CPC	BROAD	http:////www.smth.com/this_one_is_insignificant_for_a_test_c3019
+282163095473	coche,accesorios,es	ON	CPC	BROAD	http:////www.smth.com/this_one_is_insignificant_for_a_test_c3019
+289291379072	c1172,html,a2135,base,knowledge	ON	CPC	PHRASE	http:////www.smth.com/this_one_is_insignificant_for_a_test_a2135.html
+282163095458	c1170,html,a2124,base,knowledge	ON	CPC	BROAD	http:////www.smth.com/this_one_is_insignificant_for_a_test

@@ -7,4 +7,5 @@ class KeywordsCounter {
         int exitCode = ToolRunner.run(new KeywordsCounterDriver(), args);
         System.exit(exitCode);
     }
+
 }

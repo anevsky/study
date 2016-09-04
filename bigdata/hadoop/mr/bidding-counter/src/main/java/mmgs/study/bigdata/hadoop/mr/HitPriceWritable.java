@@ -80,8 +80,6 @@ class HitPriceWritable implements WritableComparable<HitPriceWritable> {
 
     @Override
     public String toString() {
-        return "HitPriceWritable{" + "hit=" + this.hit +
-                ", price=" + this.price +
-                '}';
+        return this.hit + "," + this.price;
     }
 }

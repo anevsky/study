@@ -32,6 +32,9 @@ public class ApplicationMaster {
     private static final HdfsManipulator hdfsManipulator = HdfsManipulator.newInstance();
 
     public static void main(String[] args) throws Exception {
+        String sourceDir = args[0];
+        String targetDir = args[1];
+
         LOG.info("Start ApplicationMaster ...");
         // TODO: specify number of containers in property file
         final int numOfContainers = 2;
@@ -97,6 +100,7 @@ public class ApplicationMaster {
                 // Launch container by creating ContainerLaunchContext
                 ContainerLaunchContext containerCtx = Records.newRecord(ContainerLaunchContext.class);
                 containerCtx.setCommands(Collections.singletonList("java" + " -Xmx256M" + " " + " " + CONTAINER_MAIN_CLASS
+                        + " " + sourceDir + " " + targetDir
                         + " 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/stdout"
                         + " 2>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/stderr"));
                 System.out.println("Starting container on node : " + container.getNodeHttpAddress());

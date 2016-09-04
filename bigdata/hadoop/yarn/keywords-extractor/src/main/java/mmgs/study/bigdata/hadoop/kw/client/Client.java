@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import mmgs.study.bigdata.hadoop.kw.utils.HdfsManipulator;
+import org.apache.commons.lang.Validate;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -30,15 +31,20 @@ public class Client {
     private static final HdfsManipulator hdfsManipulator = HdfsManipulator.newInstance();
 
     public static void main(String[] args) throws Exception {
+        // TODO: validate incoming arguments
+        // TODO: provide help
+        // TODO: check if directories exist and source directory is not empty
+        String sourceDir = args[0];
+        String targetDir = args[1];
         try {
             Client clientObj = new Client();
-            clientObj.run();
+            clientObj.run(sourceDir, targetDir);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void run() throws Exception {
+    public void run(String sourceDir, String targetDir) throws Exception {
         final Path appMasterJarPath = new Path(hdfsManipulator.getFS() + "/" + APPLICATION_FULL_PATH);
 
         // TODO: make proper init method
@@ -90,6 +96,7 @@ public class Client {
         LOG.info("Setting command to start ApplicationMaster service");
         // TODO: set JVM options in property file
         amContainer.setCommands(Collections.singletonList("java" + " -Xmx256M" + " " + APP_MASTER_MAIN_CLASS
+                + " " + sourceDir + " " + targetDir
                 + " 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/stdout"
                 + " 2>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/stderr"));
         amContainer.setEnvironment(appMasterEnv);

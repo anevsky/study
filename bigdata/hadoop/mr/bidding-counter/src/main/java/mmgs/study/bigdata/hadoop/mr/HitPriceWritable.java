@@ -12,28 +12,29 @@ class HitPriceWritable implements WritableComparable<HitPriceWritable> {
     private IntWritable hit;
     private IntWritable price;
 
-    public HitPriceWritable() {
+    HitPriceWritable() {
         set(new IntWritable(), new IntWritable());
     }
 
-    public HitPriceWritable(Integer hit, Integer price) {
+    HitPriceWritable(Integer hit, Integer price) {
         set(new IntWritable(hit), new IntWritable(price));
     }
 
-    public HitPriceWritable(IntWritable hit, IntWritable price) {
-        set(hit, price);
-    }
-
-    public void set(IntWritable hit, IntWritable price) {
+    private void set(IntWritable hit, IntWritable price) {
         this.hit = hit;
         this.price = price;
     }
 
-    public IntWritable getHit() {
+    void set(Integer hit, Integer price) {
+        this.hit.set(hit);
+        this.price.set(price);
+    }
+
+    IntWritable getHit() {
         return this.hit;
     }
 
-    public IntWritable getPrice() {
+    IntWritable getPrice() {
         return this.price;
     }
 

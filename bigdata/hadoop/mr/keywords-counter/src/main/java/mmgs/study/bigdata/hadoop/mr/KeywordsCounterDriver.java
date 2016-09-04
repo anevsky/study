@@ -16,15 +16,15 @@ import java.io.PrintStream;
 
 import static mmgs.study.bigdata.hadoop.mr.KeywordsCounterConstants.APP_NAME;
 
-class KeywordsCounterDriver extends Configured implements Tool {
+// TODO: process header
+// TODO: create output header
+// TODO: use ',' as a delimiter in output file
+
+public class KeywordsCounterDriver extends Configured implements Tool {
     public int run(String[] args) throws InterruptedException, IOException, ClassNotFoundException {
         Configuration conf = new Configuration();
 
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
-/*        if (otherArgs.length == 1 && args[0] == "-help") {
-            printUsage(System.out);
-            System.exit(0);
-        } else*/
         if (otherArgs.length < 2) {
             printUsage(System.err);
             System.exit(2);

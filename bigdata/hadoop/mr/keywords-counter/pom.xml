@@ -62,6 +62,11 @@
                 <version>2.5</version>
                 <configuration>
                     <outputDirectory>${basedir}</outputDirectory>
+                    <archive>
+                        <manifest>
+                            <mainClass>mmgs.study.bigdata.hadoop.mr.KeywordsCounter</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
         </plugins>

@@ -11,22 +11,25 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.*;
 
-public class KeywordsCounterDriverTest {
+public class KeywordsCounterDriverLocalTest {
     @Test
-    public void runLocal() throws Exception {
+    public void runLocalValid() throws Exception {
         Configuration conf = new Configuration();
         conf.set("fs.defaultFS", "file:///");
         conf.set("mapreduce.framework.name", "local");
         conf.setInt("mapreduce.task.io.sort.mb", 1);
 
-        Path input = new Path("testdata/input");
-        Path output = new Path("testdata/output");
+        URL testFile = getClass().getResource("/test-keywords-dataset.txt");
+        Path input = new Path(testFile.getPath());
 
+        URL outDir = getClass().getResource("/output");
+        Path output = new Path(outDir.getPath());
         FileSystem fs = FileSystem.getLocal(conf);
         fs.delete(output, true);
 

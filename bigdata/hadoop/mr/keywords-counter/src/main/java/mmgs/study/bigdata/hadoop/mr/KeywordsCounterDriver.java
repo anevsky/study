@@ -18,6 +18,7 @@ import java.net.URL;
 
 import static mmgs.study.bigdata.hadoop.mr.KeywordsCounterConstants.APP_NAME;
 import static mmgs.study.bigdata.hadoop.mr.KeywordsCounterConstants.HEADER_FILE;
+import static mmgs.study.bigdata.hadoop.mr.KeywordsCounterConstants.OUT_DELIMITER;
 
 public class KeywordsCounterDriver extends Configured implements Tool {
     public int run(String[] args) throws InterruptedException, IOException, ClassNotFoundException, URISyntaxException {
@@ -29,7 +30,7 @@ public class KeywordsCounterDriver extends Configured implements Tool {
             System.exit(2);
         }
 
-        conf.set("mapreduce.output.textoutputformat.separator", ",");
+        conf.set("mapreduce.output.textoutputformat.separator", OUT_DELIMITER);
 
         Job job = Job.getInstance(conf, APP_NAME);
         job.setJarByClass(getClass());

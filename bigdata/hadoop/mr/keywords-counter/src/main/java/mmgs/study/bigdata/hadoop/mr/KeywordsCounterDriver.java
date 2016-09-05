@@ -13,16 +13,11 @@ import org.apache.hadoop.util.Tool;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
 import static mmgs.study.bigdata.hadoop.mr.KeywordsCounterConstants.APP_NAME;
 import static mmgs.study.bigdata.hadoop.mr.KeywordsCounterConstants.HEADER_FILE;
-
-// TODO: process header
-// TODO: create output header
-// TODO: use ',' as a delimiter in output file
 
 public class KeywordsCounterDriver extends Configured implements Tool {
     public int run(String[] args) throws InterruptedException, IOException, ClassNotFoundException, URISyntaxException {
@@ -33,6 +28,8 @@ public class KeywordsCounterDriver extends Configured implements Tool {
             printUsage(System.err);
             System.exit(2);
         }
+
+        conf.set("mapreduce.output.textoutputformat.separator", ",");
 
         Job job = Job.getInstance(conf, APP_NAME);
         job.setJarByClass(getClass());

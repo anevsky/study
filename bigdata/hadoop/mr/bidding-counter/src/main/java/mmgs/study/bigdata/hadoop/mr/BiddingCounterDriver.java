@@ -44,9 +44,9 @@ public class BiddingCounterDriver extends Configured implements Tool {
         job.setOutputFormatClass(SequenceFileOutputFormat.class);
         // TODO: java.lang.RuntimeException: native snappy library not available:
         //       this version of libhadoop was built without snappy support.
-        // SequenceFileOutputFormat.setCompressOutput(job, true);
-        //        SequenceFileOutputFormat.setOutputCompressorClass(job, SnappyCodec.class);
-        //        SequenceFileOutputFormat.setOutputCompressionType(job, SequenceFile.CompressionType.RECORD);
+        SequenceFileOutputFormat.setCompressOutput(job, true);
+        SequenceFileOutputFormat.setOutputCompressorClass(job, SnappyCodec.class);
+        SequenceFileOutputFormat.setOutputCompressionType(job, SequenceFile.CompressionType.RECORD);
         return job.waitForCompletion(true) ? 0 : 1;
     }
 

@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>bidding-counter</groupId>
-    <artifactId>mmgs.study.bigdata.hadoop.mr</artifactId>
+    <groupId>mmgs.study.bigdata.hadoop.mr</groupId>
+    <artifactId>bidding-counter</artifactId>
     <version>1.0.0</version>
 
     <properties>
@@ -20,6 +20,7 @@
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-client</artifactId>
             <version>${hadoop.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- User Agent parsing -->
@@ -65,17 +66,30 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.5</version>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2.1</version>
                 <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
                     <outputDirectory>${basedir}</outputDirectory>
                     <archive>
                         <manifest>
                             <mainClass>mmgs.study.bigdata.hadoop.mr.BiddingCounter</mainClass>
                         </manifest>
                     </archive>
+                    <finalName>${artifactId}</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

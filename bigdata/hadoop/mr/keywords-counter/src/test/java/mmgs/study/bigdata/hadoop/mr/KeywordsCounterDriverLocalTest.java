@@ -18,6 +18,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.*;
 
 public class KeywordsCounterDriverLocalTest {
+
     @Test
     public void runLocalValid() throws Exception {
         Configuration conf = new Configuration();
@@ -42,12 +43,36 @@ public class KeywordsCounterDriverLocalTest {
         checkOutput(conf, output);
     }
 
+    @Test
+    public void runLocalWithHeader() throws Exception {
+        Configuration conf = new Configuration();
+        conf.set("fs.defaultFS", "file:///");
+        conf.set("mapreduce.framework.name", "local");
+        conf.setInt("mapreduce.task.io.sort.mb", 1);
+
+        URL testFile = getClass().getResource("/test-keywords-dataset-with-header.txt");
+        Path input = new Path(testFile.getPath());
+
+        URL outDir = getClass().getResource("/output");
+        Path output = new Path(outDir.getPath());
+        FileSystem fs = FileSystem.getLocal(conf);
+        fs.delete(output, true);
+
+        KeywordsCounterDriver driver = new KeywordsCounterDriver();
+        driver.setConf(conf);
+
+        int exitCode = driver.run(new String[]{input.toString(), output.toString()});
+
+        assertThat(exitCode, is(0));
+        checkOutput(conf, output);
+    }
+
     private void checkOutput(Configuration conf, Path output) throws IOException {
         FileSystem fs = FileSystem.getLocal(conf);
         Path[] outputFiles = FileUtil.stat2Paths(fs.listStatus(output, new OutputLogFilter()));
         assertThat(outputFiles.length, is(2));
 
-        BufferedReader actual = asBufferedReader(fs.open(outputFiles[0]));
+        BufferedReader actual = asBufferedReader(fs.open(outputFiles[1]));
         BufferedReader expected = asBufferedReader(getClass().getResourceAsStream("/driver-expected-output.txt"));
         String expectedLine;
         while ((expectedLine = expected.readLine()) != null) {

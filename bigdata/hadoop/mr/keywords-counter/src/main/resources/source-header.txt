@@ -1,0 +1,1 @@
+ID	Keyword Value	Keyword Status	Pricing Type	Keyword Match Type	Destination URL

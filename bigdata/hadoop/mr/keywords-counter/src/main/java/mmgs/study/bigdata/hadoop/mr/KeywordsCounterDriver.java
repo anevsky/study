@@ -13,15 +13,19 @@ import org.apache.hadoop.util.Tool;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import static mmgs.study.bigdata.hadoop.mr.KeywordsCounterConstants.APP_NAME;
+import static mmgs.study.bigdata.hadoop.mr.KeywordsCounterConstants.HEADER_FILE;
 
 // TODO: process header
 // TODO: create output header
 // TODO: use ',' as a delimiter in output file
 
 public class KeywordsCounterDriver extends Configured implements Tool {
-    public int run(String[] args) throws InterruptedException, IOException, ClassNotFoundException {
+    public int run(String[] args) throws InterruptedException, IOException, ClassNotFoundException, URISyntaxException {
         Configuration conf = new Configuration();
 
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
@@ -32,6 +36,9 @@ public class KeywordsCounterDriver extends Configured implements Tool {
 
         Job job = Job.getInstance(conf, APP_NAME);
         job.setJarByClass(getClass());
+
+        URL headerFile = getClass().getClassLoader().getResource(HEADER_FILE);
+        job.addCacheFile(headerFile.toURI());
 
         FileInputFormat.addInputPath(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));

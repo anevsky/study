@@ -1,4 +1,4 @@
-113.119.105.*	HitPriceWritable{hit=1, price=300}
-114.100.37.*	HitPriceWritable{hit=1, price=227}
-180.127.189.*	HitPriceWritable{hit=1, price=227}
-42.184.148.*	HitPriceWritable{hit=1, price=227}
+113.119.105.*	1,300
+114.100.37.*	1,227
+180.127.189.*	1,227
+42.184.148.*	1,227

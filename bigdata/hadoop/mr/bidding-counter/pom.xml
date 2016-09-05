@@ -22,6 +22,14 @@
             <version>${hadoop.version}</version>
         </dependency>
 
+        <!-- User Agent parsing -->
+        <dependency>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+            <version>1.19</version>
+        </dependency>
+
+
         <!-- Testing -->
         <dependency>
             <groupId>junit</groupId>

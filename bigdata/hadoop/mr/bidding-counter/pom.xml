@@ -53,7 +53,7 @@
     </dependencies>
 
     <build>
-        <finalName>keywords-counter</finalName>
+        <finalName>bidding-counter</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

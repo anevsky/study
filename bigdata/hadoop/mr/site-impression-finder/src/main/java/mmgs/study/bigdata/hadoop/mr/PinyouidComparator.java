@@ -10,6 +10,8 @@ public class PinyouidComparator extends WritableComparator {
 
     @Override
     public int compare(WritableComparable w1, WritableComparable w2) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        PinyouidTimestampWritable p1 = (PinyouidTimestampWritable) w1;
+        PinyouidTimestampWritable p2 = (PinyouidTimestampWritable) w2;
+        return p1.getPinyouid().compareTo(p2.getPinyouid());
     }
 }

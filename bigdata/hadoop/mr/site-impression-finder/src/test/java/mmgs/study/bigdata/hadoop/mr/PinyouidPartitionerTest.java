@@ -1,15 +1,15 @@
 package mmgs.study.bigdata.hadoop.mr;
 
-import org.apache.hadoop.io.NullWritable;
+import org.apache.hadoop.io.Text;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class PinyouidPartitionerTest {
     private PinyouidPartitioner partitioner = new PinyouidPartitioner();
-    private NullWritable nothing = NullWritable.get();
+    private Text nothing = new Text("1");
     private int partitionsAmt = 2;
 
     @Test

@@ -6,22 +6,20 @@ import org.apache.hadoop.io.WritableComparable;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
+import static mmgs.study.bigdata.hadoop.mr.SiteImpressionFinderConstants.MAPPER_DELIMITER;
 
 
 class PinyouidTimestampWritable implements WritableComparable<PinyouidTimestampWritable> {
-    private static DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMddHHmmss.SSS");
     private Text pinyouid;
     private Text timestampTxt;
-    private LocalDateTime timestamp;
 
     PinyouidTimestampWritable() {
         set(new Text(), new Text());
     }
 
     PinyouidTimestampWritable(String pinyouid, String timestampTxt) {
-        set(new Text(pinyouid), new Text(timestampTxt));
+        set(pinyouid, timestampTxt);
     }
 
     private void set(Text pinyouid, Text timestampTxt) {
@@ -30,10 +28,7 @@ class PinyouidTimestampWritable implements WritableComparable<PinyouidTimestampW
     }
 
     void set(String pinyouid, String timestampTxt) {
-        this.pinyouid.set(pinyouid);
-        this.timestampTxt.set(timestampTxt);
-        String timestamp = timestampTxt.substring(0, 13) + '.' + timestampTxt.substring(15,17);
-        this.timestamp = LocalDateTime.parse(timestamp, format);
+        set(new Text(pinyouid), new Text(timestampTxt));
     }
 
     Text getPinyouid() {
@@ -86,6 +81,6 @@ class PinyouidTimestampWritable implements WritableComparable<PinyouidTimestampW
 
     @Override
     public String toString() {
-        return this.pinyouid + "," + this.timestampTxt;
+        return this.pinyouid + MAPPER_DELIMITER + this.timestampTxt;
     }
 }

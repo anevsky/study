@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Arrays;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
@@ -52,9 +53,11 @@ public class SiteImpressionFinderDriverTest {
         Path[] outputFiles = FileUtil.stat2Paths(fs.listStatus(output, new OutputLogFilter()));
         // 2 = actual output + SUCCESS file
         assertThat(outputFiles.length, is(2));
-        System.out.println(outputFiles[0].toString() + " " + outputFiles[1].toString());
+//        System.out.println(outputFiles[0].toString() + " " + outputFiles[1].toString());
 
-        BufferedReader actual = asBufferedReader(fs.open(outputFiles[1]));
+        Path resultFile = outputFiles[0].toString().equals("_SUCCESS") ? outputFiles[1] : outputFiles[0];
+
+        BufferedReader actual = asBufferedReader(fs.open(resultFile));
         BufferedReader expected = asBufferedReader(getClass().getResourceAsStream("/driver-expected-output.txt"));
         String expectedLine;
         while ((expectedLine = expected.readLine()) != null) {

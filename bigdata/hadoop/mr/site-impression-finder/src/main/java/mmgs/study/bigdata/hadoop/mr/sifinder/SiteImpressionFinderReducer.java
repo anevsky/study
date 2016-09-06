@@ -1,14 +1,12 @@
 package mmgs.study.bigdata.hadoop.mr.sifinder;
 
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
-import java.util.Iterator;
 
-import static mmgs.study.bigdata.hadoop.mr.sifinder.SiteImpressionFinderConstants.MAPPER_DELIMITER;
+import static mmgs.study.bigdata.hadoop.mr.sifinder.SiteImpressionFinderConstants.*;
 
 class SiteImpressionFinderReducer extends Reducer<PinyouidTimestampWritable, Text, NullWritable, Text> {
 
@@ -19,7 +17,7 @@ class SiteImpressionFinderReducer extends Reducer<PinyouidTimestampWritable, Tex
     private String currPinYouId;
 
     @Override
-    protected void setup(Context context) throws IOException, InterruptedException{
+    protected void setup(Context context) throws IOException, InterruptedException {
         this.max = -1;
         this.curr = 0;
         this.currPinYouId = "";
@@ -33,7 +31,7 @@ class SiteImpressionFinderReducer extends Reducer<PinyouidTimestampWritable, Tex
             String line = value.toString();
             String streamId = line.substring(line.lastIndexOf(MAPPER_DELIMITER) + 1);
             String pinYouId = key.getPinyouid().toString();
-            if ("1".equals(streamId)) {
+            if (APP_SITE_IMPRESSION_CODE.equals(streamId)) {
                 if (this.currPinYouId.equals(pinYouId)) {
                     this.curr++;
                 } else {
@@ -55,6 +53,6 @@ class SiteImpressionFinderReducer extends Reducer<PinyouidTimestampWritable, Tex
             this.maxPinYouId = this.currPinYouId;
         }
         if (!"".equals(this.maxPinYouId))
-            context.getCounter("Max StreamId", this.maxPinYouId).setValue(this.max);
+            context.getCounter(APP_SITE_IMPRESSION_GROUP, this.maxPinYouId).setValue(this.max);
     }
 }

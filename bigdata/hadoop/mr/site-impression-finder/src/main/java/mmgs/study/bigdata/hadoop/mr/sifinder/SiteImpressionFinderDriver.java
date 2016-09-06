@@ -5,7 +5,6 @@ import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counter;
-import org.apache.hadoop.mapreduce.CounterGroup;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
@@ -13,8 +12,9 @@ import org.apache.hadoop.util.GenericOptionsParser;
 import org.apache.hadoop.util.Tool;
 
 import java.io.PrintStream;
-import java.net.URL;
 import java.util.Iterator;
+
+import static mmgs.study.bigdata.hadoop.mr.sifinder.SiteImpressionFinderConstants.APP_SITE_IMPRESSION_GROUP;
 
 public class SiteImpressionFinderDriver extends Configured implements Tool {
     @Override
@@ -46,7 +46,7 @@ public class SiteImpressionFinderDriver extends Configured implements Tool {
 
         String maxPinYouId = "";
         long max = -1;
-        Iterator<Counter> iterator = job.getCounters().getGroup("Max StreamId").iterator();
+        Iterator<Counter> iterator = job.getCounters().getGroup(APP_SITE_IMPRESSION_GROUP).iterator();
         while (iterator.hasNext()) {
             Counter counter = iterator.next();
             if (counter.getValue() > max) {
@@ -61,7 +61,7 @@ public class SiteImpressionFinderDriver extends Configured implements Tool {
             System.out.println("\nNo site impressions found within dataset");
 
 
-        return  exitCode ? 0 : 1;
+        return exitCode ? 0 : 1;
     }
 
     private static void printUsage(PrintStream stream) {

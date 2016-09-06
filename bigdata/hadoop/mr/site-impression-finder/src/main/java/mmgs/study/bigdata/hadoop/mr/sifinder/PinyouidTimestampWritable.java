@@ -1,4 +1,4 @@
-package mmgs.study.bigdata.hadoop.mr;
+package mmgs.study.bigdata.hadoop.mr.sifinder;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.WritableComparable;
@@ -6,8 +6,6 @@ import org.apache.hadoop.io.WritableComparable;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-
-import static mmgs.study.bigdata.hadoop.mr.SiteImpressionFinderConstants.MAPPER_DELIMITER;
 
 
 class PinyouidTimestampWritable implements WritableComparable<PinyouidTimestampWritable> {
@@ -27,7 +25,7 @@ class PinyouidTimestampWritable implements WritableComparable<PinyouidTimestampW
         this.timestampTxt = timestampTxt;
     }
 
-    void set(String pinyouid, String timestampTxt) {
+    private void set(String pinyouid, String timestampTxt) {
         set(new Text(pinyouid), new Text(timestampTxt));
     }
 
@@ -81,6 +79,6 @@ class PinyouidTimestampWritable implements WritableComparable<PinyouidTimestampW
 
     @Override
     public String toString() {
-        return this.pinyouid + MAPPER_DELIMITER + this.timestampTxt;
+        return this.pinyouid + SiteImpressionFinderConstants.MAPPER_DELIMITER + this.timestampTxt;
     }
 }

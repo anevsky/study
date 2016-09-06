@@ -1,9 +1,8 @@
-package mmgs.study.bigdata.hadoop.mr;
+package mmgs.study.bigdata.hadoop.mr.sifinder;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -12,8 +11,7 @@ import org.apache.hadoop.util.GenericOptionsParser;
 import org.apache.hadoop.util.Tool;
 
 import java.io.PrintStream;
-
-import static mmgs.study.bigdata.hadoop.mr.SiteImpressionFinderConstants.APP_NAME;
+import java.net.URL;
 
 public class SiteImpressionFinderDriver extends Configured implements Tool {
     @Override
@@ -26,7 +24,7 @@ public class SiteImpressionFinderDriver extends Configured implements Tool {
             System.exit(2);
         }
 
-        Job job = Job.getInstance(conf, APP_NAME);
+        Job job = Job.getInstance(conf, SiteImpressionFinderConstants.APP_NAME);
         job.setJarByClass(getClass());
 
         FileInputFormat.addInputPath(job, new Path(args[0]));
@@ -37,6 +35,7 @@ public class SiteImpressionFinderDriver extends Configured implements Tool {
         job.setSortComparatorClass(PinyouidTimestampComparator.class);
         job.setGroupingComparatorClass(PinyouidComparator.class);
 
+        job.setReducerClass(SiteImpressionFinderReducer.class);
         job.setOutputKeyClass(PinyouidTimestampWritable.class);
         job.setOutputValueClass(Text.class);
 
@@ -44,6 +43,6 @@ public class SiteImpressionFinderDriver extends Configured implements Tool {
     }
 
     private static void printUsage(PrintStream stream) {
-        stream.println("Usage: " + APP_NAME + "<in> [<in>...] <out>");
+        stream.println("Usage: " + SiteImpressionFinderConstants.APP_NAME + "<in> [<in>...] <out>");
     }
 }

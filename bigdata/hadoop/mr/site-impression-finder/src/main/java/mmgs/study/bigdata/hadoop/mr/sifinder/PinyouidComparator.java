@@ -1,10 +1,10 @@
-package mmgs.study.bigdata.hadoop.mr;
+package mmgs.study.bigdata.hadoop.mr.sifinder;
 
 import org.apache.hadoop.io.WritableComparable;
 import org.apache.hadoop.io.WritableComparator;
 
-public class PinyouidComparator extends WritableComparator {
-    protected PinyouidComparator() {
+class PinyouidComparator extends WritableComparator {
+    PinyouidComparator() {
         super(PinyouidTimestampWritable.class, true);
     }
 

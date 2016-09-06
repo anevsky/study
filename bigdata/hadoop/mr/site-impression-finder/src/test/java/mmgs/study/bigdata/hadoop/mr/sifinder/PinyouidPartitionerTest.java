@@ -1,5 +1,7 @@
-package mmgs.study.bigdata.hadoop.mr;
+package mmgs.study.bigdata.hadoop.mr.sifinder;
 
+import mmgs.study.bigdata.hadoop.mr.sifinder.PinyouidPartitioner;
+import mmgs.study.bigdata.hadoop.mr.sifinder.PinyouidTimestampWritable;
 import org.apache.hadoop.io.Text;
 import org.junit.Test;
 

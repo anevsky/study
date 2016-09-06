@@ -1,12 +1,11 @@
-package mmgs.study.bigdata.hadoop.mr;
+package mmgs.study.bigdata.hadoop.mr.sifinder;
 
+import mmgs.study.bigdata.hadoop.mr.sifinder.PinyouidTimestampWritable;
+import mmgs.study.bigdata.hadoop.mr.sifinder.SiteImpressionFinderMapper;
 import org.apache.hadoop.io.LongWritable;
-import org.apache.hadoop.io.ShortWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mrunit.mapreduce.MapDriver;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class SiteImpressionFinderMapperTest {
     @Test
@@ -15,7 +14,7 @@ public class SiteImpressionFinderMapperTest {
         new MapDriver<LongWritable, Text, PinyouidTimestampWritable, Text>()
                 .withMapper(new SiteImpressionFinderMapper())
                 .withInput(new LongWritable((short) 0), new Text(line))
-                .withOutput(new PinyouidTimestampWritable("Vhk0PkNTLZsTQmL", "20130607131228779"), new Text("0"))
+                .withOutput(new PinyouidTimestampWritable("Vhk0PkNTLZsTQmL", "20130607131228779"), new Text(line))
                 .runTest();
     }
 

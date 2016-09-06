@@ -1,14 +1,11 @@
-package mmgs.study.bigdata.hadoop.mr;
+package mmgs.study.bigdata.hadoop.mr.sifinder;
 
+import mmgs.study.bigdata.hadoop.mr.sifinder.SiteImpressionFinderDriver;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.FileUtil;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IOUtils;
-import org.apache.hadoop.io.SequenceFile;
-import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapred.OutputLogFilter;
-import org.apache.hadoop.util.ReflectionUtils;
 import org.junit.Test;
 
 import java.io.BufferedReader;

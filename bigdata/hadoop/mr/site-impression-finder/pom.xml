@@ -70,7 +70,7 @@
                     <outputDirectory>${basedir}</outputDirectory>
                     <archive>
                         <manifest>
-                            <mainClass>mmgs.study.bigdata.hadoop.mr.SiteImpressionFinder</mainClass>
+                            <mainClass>mmgs.study.bigdata.hadoop.mr.sifinder.SiteImpressionFinder</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

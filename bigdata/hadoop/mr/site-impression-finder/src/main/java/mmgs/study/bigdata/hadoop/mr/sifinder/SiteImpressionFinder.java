@@ -1,4 +1,4 @@
-package mmgs.study.bigdata.hadoop.mr;
+package mmgs.study.bigdata.hadoop.mr.sifinder;
 
 import org.apache.hadoop.util.ToolRunner;
 

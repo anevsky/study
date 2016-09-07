@@ -1,5 +1,6 @@
 package mmgs.study.bigdata.hadoop.kw.container.crawler;
 
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -16,7 +17,7 @@ public class WebDocumentExtractor implements DocumentExtractor {
 
     private URL url;
 
-    public WebDocumentExtractor(String url) throws MalformedURLException {
+    public WebDocumentExtractor(String url) throws MalformedURLException, HttpStatusException {
         if (url == null || url.isEmpty())
             throw new IllegalArgumentException("URL cannot be empty");
         this.url = new URL(url);

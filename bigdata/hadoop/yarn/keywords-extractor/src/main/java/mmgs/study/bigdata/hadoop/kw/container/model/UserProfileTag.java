@@ -62,7 +62,7 @@ public class UserProfileTag {
     }
 
     void setKeywordValue(Set<String> keywords) {
-        keywords.stream().collect(Collectors.joining(","));
+        this.keywordValue = keywords.stream().collect(Collectors.joining(","));
     }
 
     public String getDestinationURL() {

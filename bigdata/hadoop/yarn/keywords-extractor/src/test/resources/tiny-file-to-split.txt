@@ -1,0 +1,12 @@
+282163090732		ON	CPC	BROAD	http://www.example.com/there_is_no_difference_what_text_is_here_p1516838.html
+282163096883		ON	CPC	BROAD	http://www.example.com/there_is_no_difference_what_text_is_here_c9859
+282163094005		ON	CPC	BROAD	http://www.example.com/there_is_no_difference_what_text_is_here_c623
+282163093272		ON	CPC	BROAD	http://www.example.com/there_is_no_difference_what_text_is_here_p4816843.html
+282163094703		ON	CPC	BROAD	http://www.example.com/there_is_no_difference_what_text_is_here
+289291383378		ON	CPC	PHRASE	http://www.example.com/there_is_no_difference_what_text_is_here_p2513586.html
+282162964875		ON	CPC	BROAD	http://www.example.com/there_is_no_difference_what_text_is_here_c4955
+282825712846		ON	CPC	BROAD	http://www.example.com/there_is_no_difference_what_text_is_here_c7499
+282163091140		ON	CPC	BROAD	http://www.example.com/there_is_no_difference_what_text_is_here_c9904
+282162963628		ON	CPC	BROAD	http://www.example.com/there_is_no_difference_what_text_is_here_c10292
+293745800774		ON	CPC	BROAD	http://www.example.com/there_is_no_difference_what_text_is_here_c9906
+282163000648		ON	CPC	BROAD	http://www.example.com/there_is_no_difference_what_text_is_here_c9822

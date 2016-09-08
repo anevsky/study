@@ -27,7 +27,11 @@ public class Container {
     public static void main(String[] args) {
         String inFilePath = args[0];
         String outFileDir = args[1];
+        Integer startPos = Integer.parseInt(args[2]);
+        Integer endPos = Integer.parseInt(args[3]);
 
+        System.out.println(inFilePath);
+        System.out.println(outFileDir);
         FileSystem fs;
         try {
             Path inFile = new Path(inFilePath);

@@ -1,0 +1,16 @@
+282162995497		ON	CPC	BROAD	http://www.example.com/measuring-tools_c9861
+282163090103		ON	CPC	BROAD	http://www.example.com/marsing-h7-20w-7000k-1800lm-4-cob-led-ice-blue-light-car-headlamp-foglight-12-24v-2-pcs_p1887781.html
+282163093905		ON	CPC	BROAD	http://www.example.com/lossman-hot-auto-double-usb-car-charger-waterproof-fashion_p4788940.html
+282162996094		ON	CPC	BROAD	http://www.example.com/lossman-car-ship-double-usb-car-charger-fast-automatic-cigarette-lighter-digital-voltmeter_p4788941.html
+282163095829		ON	CPC	BROAD	http://www.example.com/lorcoo-simcarbon-3d-carbon-fiber-vinyl-film-wrap-black-12-x-50-sheet_p4065018.html
+282825713043		ON	CPC	BROAD	http://www.example.com/lorcoo-100-30cm-car-light-membrane-translucent-scrub-rear-light-film-free-gift-edge-squeegee-knife_p4709584.html
+282163096684		ON	CPC	BROAD	http://www.example.com/led-lighting_c4685
+282163093097		ON	CPC	BROAD	http://www.example.com/knowledge-base/
+282162971044		ON	CPC	BROAD	http://www.example.com/key-chains1_c9891
+282163092348		ON	CPC	BROAD	http://www.example.com/jewelry-watches_c4676
+282163097103		ON	CPC	BROAD	http://www.example.com/iztoss-170pcs-100mm-2-1-ratio-6-size-1-2-2-4-3-2-4-8-6-4-9-5-0-6-4-8mm-polyolefin-heat-shrink-tubing-sleeve-cable-kit_p4812211.html
+282163095742		ON	CPC	BROAD	http://www.example.com/accessories-for-ipad-2_c4137
+282825712867		ON	CPC	BROAD	http://www.example.com/interior-car-accessories_c9820
+282163090541		ON	CPC	BROAD	http://www.example.com/interior-car-accessories-c9820-car-charger_c10512
+282162982687		OFF	CPC	BROAD	http://www.example.com/i1000-hd-1080p-dual-lens-camcorder-car-dvr-dash-cam-black-box-with-rear-view-camera_p1679791.html
+282163092710		ON	CPC	BROAD	http://www.example.com/household-pets_c3026

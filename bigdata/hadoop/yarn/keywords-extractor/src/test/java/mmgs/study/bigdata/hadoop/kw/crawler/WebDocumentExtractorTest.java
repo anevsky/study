@@ -2,6 +2,7 @@ package mmgs.study.bigdata.hadoop.kw.crawler;
 
 import mmgs.study.bigdata.hadoop.kw.container.crawler.DocumentExtractor;
 import mmgs.study.bigdata.hadoop.kw.container.crawler.WebDocumentExtractor;
+import org.jsoup.HttpStatusException;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ import static org.junit.Assert.*;
 public class WebDocumentExtractorTest {
     @Test(expected = IllegalArgumentException.class)
 
-    public void createExtractorNullURL() {
+    public void createExtractorNullURL() throws HttpStatusException {
         try {
             DocumentExtractor extractor = new WebDocumentExtractor(null);
         } catch (MalformedURLException e) {
@@ -27,7 +28,7 @@ public class WebDocumentExtractorTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void createExtractorEmptyURL() {
+    public void createExtractorEmptyURL() throws HttpStatusException {
         try {
             DocumentExtractor extractor = new WebDocumentExtractor("");
         } catch (MalformedURLException e) {

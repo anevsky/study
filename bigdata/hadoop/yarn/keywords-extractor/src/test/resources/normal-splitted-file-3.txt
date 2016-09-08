@@ -1,0 +1,15 @@
+282825712990		ON	CPC	BROAD	http://www.example.com/hid-halogen-lights_c3118
+282162987750		ON	CPC	BROAD	http://www.example.com/helmet-headsets-mini_c10294
+282163090011		OFF	CPC	BROAD	http://www.example.com/h7-super-white-car-light-bulbs-100w-2-pack-dc-12v_p691712.html
+282825712864		ON	CPC	BROAD	http://www.example.com/h7-px26d-80w-16xcree-cold-white-4500lm-6500k-for-car-fog-light-ac-dc12v-24_p2528400.html
+282825712800		ON	CPC	BROAD	http://www.example.com/h4-cree-ledx12-60w-6500k-7000k-white-light-led-bulb-for-car-12-24v-1pc_p2269878.html
+282163091881		ON	CPC	BROAD	http://www.example.com/h4-4-2w-126x3528-smd-6500-7000k-white-light-led-blub-for-car-lamps-dc-12v_p402406.html
+282163093177		OFF	CPC	BROAD	http://www.example.com/h1-50w-3500lm-6000k-cool-white-light-led-bulb-for-car-12-30v-2-pcs_p1047391.html
+282163091445		ON	CPC	BROAD	http://www.example.com/griffin-usb-car-charger-for-iphone-samsung-and-other-cellphone-5v-2-1a_p1813126.html
+282163095146		ON	CPC	BROAD	http://www.example.com/great-deals_c9603
+282825712996		ON	CPC	BROAD	http://www.example.com/goggles-mini_c10293
+282162952505		OFF	CPC	BROAD	http://www.example.com/general-mobile-phone-bracket_p4478382.html
+282163092470		ON	CPC	BROAD	http://www.example.com/gadgets-auto-parts_c3117
+293745800818		ON	CPC	BROAD	http://www.example.com/fm-transmitters_c3116
+282163091658		OFF	CPC	BROAD	http://www.example.com/fm-transmitter-with-bluetooth-handsfree-car-kit-with-wireless-controller-bluetooth-2-0-mp3-play-usb-tf-card_p2958796.html
+282163093783		ON	CPC	BROAD	http://www.example.com/flash-sale_c9359

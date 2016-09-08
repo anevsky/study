@@ -1,0 +1,19 @@
+ID	Keyword Value	Keyword Status	Pricing Type	Keyword Match Type	Destination URL
+282163091263		ON	CPC	BROAD	http://www.example.com/oil-pollution-cleaning-automobile-engine-pipe-with-reinigungspistole-spray-gun-tool_p4815979.html
+282163090732		ON	CPC	BROAD	http://www.example.com/obdmate-diagnostic-tool-obd2-obdii-eobd-code-reader-om510-gasoline-cars-and-a-part-of-diesel-cars_p1516838.html
+282163096883		ON	CPC	BROAD	http://www.example.com/obd_c9859
+282163094005		ON	CPC	BROAD	http://www.example.com/nintendo-ds-accessories_c623
+282163093272		ON	CPC	BROAD	http://www.example.com/night-vision-back-up-wide-angle-car-rear-view-camera_p4816843.html
+282163094703		ON	CPC	BROAD	http://www.example.com/new-products/
+289291383378		ON	CPC	PHRASE	http://www.example.com/new-powerfully-charging-series-5-1a-3-usb-car-charger-adapter_p2513586.html
+282162964875		ON	CPC	BROAD	http://www.example.com/new-arrivals_c4955
+282825712846		ON	CPC	BROAD	http://www.example.com/new-arrivals-2_c7499
+282163091140		ON	CPC	BROAD	http://www.example.com/motorcycle-lighting_c9904
+282162963628		ON	CPC	BROAD	http://www.example.com/motorcycle-gloves-mini_c10292
+293745800774		ON	CPC	BROAD	http://www.example.com/motorcycle-fittings_c9906
+282163000648		ON	CPC	BROAD	http://www.example.com/motorcycle-atv_c9822
+293745800725		ON	CPC	BROAD	http://www.example.com/motorcycle-atv-parts-mini_c10291
+282162999598		ON	CPC	BROAD	http://www.example.com/motorcycle-accessories_c5219
+282825712865		ON	CPC	PHRASE	http://www.example.com/html/example-publicity.html
+282825712852		ON	CPC	BROAD	http://www.example.com/mini-v1-5-elm327-obd2-bluetooth-interface-auto-car-scanner-diagnostic-tool-for-android_p888488.html
+282162971543		ON	CPC	BROAD	http://www.example.com/mini-dual-usb-car-charger-for-iphone-ipad-samsung-and-others-5v-1a-2-1a_p1813113.html

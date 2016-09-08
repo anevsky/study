@@ -1,12 +1,18 @@
 package mmgs.study.bigdata.hadoop.kw.appmaster;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import mmgs.study.bigdata.hadoop.kw.utils.FileSplitter;
 import mmgs.study.bigdata.hadoop.kw.utils.HdfsManipulator;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -34,10 +40,9 @@ public class ApplicationMaster {
     public static void main(String[] args) throws Exception {
         String sourceDir = args[0];
         String targetDir = args[1];
+        int numOfContainers = Integer.parseInt(args[2]);
 
         LOG.info("Start ApplicationMaster ...");
-        // TODO: specify number of containers in property file
-        final int numOfContainers = 2;
         Configuration conf = new YarnConfiguration();
 
         LOG.info("Initialize client to ResourceManager ...");
@@ -62,6 +67,13 @@ public class ApplicationMaster {
         // TODO: specify memory and vcores information in property file
         capability.setMemory(128);
         capability.setVirtualCores(1);
+
+        LOG.info("Split source file into chunks for processing");
+        FileSplitter splitter = new FileSplitter();
+        FileSystem fileSystem = FileSystem.get(conf);
+        List<FileSplitter.FileChunk> chunks = splitter.split(fileSystem, sourceDir, numOfContainers);
+        numOfContainers = Math.min(numOfContainers, chunks.size());
+
         for (int i = 0; i < numOfContainers; ++i) {
             ContainerRequest containerRequested = new ContainerRequest(capability, null, null, priority, true);
             // Resource, nodes, racks, priority and relax locality flag
@@ -89,7 +101,6 @@ public class ApplicationMaster {
         }
         Apps.addToEnvironment(containerEnv, ApplicationConstants.Environment.CLASSPATH.name(), ApplicationConstants.Environment.PWD.$() + File.separator + "*");
 
-        // Point #6
         int allocatedContainers = 0;
         LOG.info("Requesting container allocation from ResourceManager");
         while (allocatedContainers < numOfContainers) {
@@ -100,10 +111,10 @@ public class ApplicationMaster {
                 // Launch container by creating ContainerLaunchContext
                 ContainerLaunchContext containerCtx = Records.newRecord(ContainerLaunchContext.class);
                 containerCtx.setCommands(Collections.singletonList("java" + " -Xmx256M" + " " + " " + CONTAINER_MAIN_CLASS
-                        + " " + sourceDir + " " + targetDir
+                        + " " + sourceDir + " " + targetDir + " " + chunks.get(allocatedContainers - 1).getStart() + " " + chunks.get(allocatedContainers - 1).getEnd()
                         + " 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/stdout"
                         + " 2>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/stderr"));
-                System.out.println("Starting container on node : " + container.getNodeHttpAddress());
+                LOG.info("Starting container on node : " + container.getNodeHttpAddress());
                 containerCtx.setEnvironment(containerEnv);
                 containerCtx.setLocalResources(localResources);
                 nmClient.startContainer(container, containerCtx);
@@ -111,14 +122,13 @@ public class ApplicationMaster {
             Thread.sleep(100);
         }
 
-        // Point #6
         int completedContainers = 0;
         while (completedContainers < numOfContainers) {
             AllocateResponse response = rmClient.allocate(completedContainers / numOfContainers);
             for (ContainerStatus status : response.getCompletedContainersStatuses()) {
                 ++completedContainers;
-                System.out.println("Container completed : " + status.getContainerId());
-                System.out.println("Completed container " + completedContainers);
+                LOG.info("Container completed : " + status.getContainerId());
+                LOG.info("Completed container " + completedContainers);
             }
             Thread.sleep(100);
         }

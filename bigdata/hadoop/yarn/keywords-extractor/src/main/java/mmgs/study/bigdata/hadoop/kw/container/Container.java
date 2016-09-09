@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 public class Container {
-    static final Logger LOG = Logger.getLogger(Container.class);
+    private static final Logger LOG = Logger.getLogger(Container.class);
 
     public static void main(String[] args) {
         String inFilePath = args[0];
@@ -30,8 +30,9 @@ public class Container {
         Integer startPos = Integer.parseInt(args[2]);
         Integer endPos = Integer.parseInt(args[3]);
 
-        System.out.println(inFilePath);
-        System.out.println(outFileDir);
+        LOG.info("Started processing characters from " + startPos + " till " + endPos);
+        LOG.debug(inFilePath);
+        LOG.debug(outFileDir);
         FileSystem fs;
         try {
             Path inFile = new Path(inFilePath);
@@ -39,18 +40,21 @@ public class Container {
             fs = FileSystem.get(new Configuration());
             BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(inFile)));
 
-            FSDataOutputStream outFile = fs.create(new Path(args[1] + "/" + fileName + ".out"));
+            FSDataOutputStream outFile = fs.create(new Path(args[1] + "/" + fileName + ".out." + startPos));
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(outFile));
             String line;
+            long charsRead = startPos;
+            br.skip(charsRead);
             line = br.readLine();
-            while (line != null) {
+            startPos += line.length();
+            while (line != null && charsRead < endPos) {
                 if (UserProfileTagParser.isUserProfileTagHeader(line)) {
-                    System.out.println("Header found");
+                    LOG.debug("Header found");
                 } else {
                     UserProfileTag userProfileTag = UserProfileTagParser.parseString(line);
-                    System.out.println("Line parsed");
+                    LOG.debug("Line parsed");
                     String destinationURL = userProfileTag.getDestinationURL();
-                    System.out.println("Destination URL extracted " + destinationURL);
+                    LOG.debug("Destination URL extracted " + destinationURL);
                     String keyWordsSource = "";
                     try {
                         DocumentExtractor htmlExtractor = new WebDocumentExtractor(destinationURL);
@@ -58,24 +62,29 @@ public class Container {
                     } catch (HttpStatusException e) {
                         keyWordsSource = destinationURL;
                     }
-                    System.out.println("HTML extracted " + keyWordsSource.length());
+                    LOG.debug("HTML extracted " + keyWordsSource.length());
                     KeyWordsExtractor keyWordsExtractor = new HtmlKeyWordsExtractor();
                     List<String> keyWords = keyWordsExtractor.extract(keyWordsSource);
-                    System.out.println("Keywords extracted " + keyWords.size());
+                    LOG.debug("Keywords extracted " + keyWords.size());
                     Set<String> top10keyWords = KeyWordsUtils.top10(keyWords);
-                    System.out.println("Top 10 keywords extracted " + top10keyWords.toString());
+                    LOG.debug("Top 10 keywords extracted " + top10keyWords.toString());
                     UserProfileTagParser.populateKeywordValue(userProfileTag, top10keyWords);
-                    System.out.println("Top 10 keywords populated");
+                    LOG.debug("Top 10 keywords populated");
                     bw.write(UserProfileTagParser.userProfileTagAsString(userProfileTag));
-                    System.out.println(UserProfileTagParser.userProfileTagAsString(userProfileTag));
+                    LOG.debug(UserProfileTagParser.userProfileTagAsString(userProfileTag));
                 }
                 line = br.readLine();
+                if (line != null)
+                    startPos += line.length();
             }
             bw.flush();
             bw.close();
             br.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.info(e.getStackTrace());
+        }
+        finally {
+            LOG.info("Finished processing characters from " + startPos + " till " + endPos);
         }
     }
 }

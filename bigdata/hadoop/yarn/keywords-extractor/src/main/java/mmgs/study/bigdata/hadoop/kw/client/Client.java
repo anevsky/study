@@ -1,6 +1,7 @@
 package mmgs.study.bigdata.hadoop.kw.client;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,20 +32,24 @@ public class Client {
     private static final HdfsManipulator hdfsManipulator = HdfsManipulator.newInstance();
 
     public static void main(String[] args) throws Exception {
+        if (args.length != 3) {
+            printUsage(System.out);
+            return;
+        }
         // TODO: validate incoming arguments
-        // TODO: provide help
         // TODO: check if directories exist and source directory is not empty
         String sourceDir = args[0];
         String targetDir = args[1];
+        Integer numOfContainers = Integer.parseInt(args[2]);
         try {
             Client clientObj = new Client();
-            clientObj.run(sourceDir, targetDir);
+            clientObj.run(sourceDir, targetDir, numOfContainers);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void run(String sourceDir, String targetDir) throws Exception {
+    public void run(String sourceDir, String targetDir, Integer numOfContainers) throws Exception {
         final Path appMasterJarPath = new Path(hdfsManipulator.getFS() + "/" + APPLICATION_FULL_PATH);
 
         // TODO: make proper init method
@@ -96,7 +101,7 @@ public class Client {
         LOG.info("Setting command to start ApplicationMaster service");
         // TODO: set JVM options in property file
         amContainer.setCommands(Collections.singletonList("java" + " -Xmx256M" + " " + APP_MASTER_MAIN_CLASS
-                + " " + sourceDir + " " + targetDir
+                + " " + sourceDir + " " + targetDir + " " + numOfContainers
                 + " 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/stdout"
                 + " 2>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/stderr"));
         amContainer.setEnvironment(appMasterEnv);
@@ -126,4 +131,9 @@ public class Client {
 
         // TODO: make proper teardown method (cleanup all application directories and jars from hdfs)
     }
+
+    private static void printUsage(PrintStream stream) {
+        stream.println("Usage: " + APPLICATION_NAME + "<in_file> <out_dir> <numOfContainers>");
+    }
+
 }

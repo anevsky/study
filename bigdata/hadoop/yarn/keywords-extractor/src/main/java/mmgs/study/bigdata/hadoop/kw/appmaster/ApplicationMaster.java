@@ -65,12 +65,13 @@ public class ApplicationMaster {
         LOG.info("Setting Resource capability for Containers ...");
         Resource capability = Records.newRecord(Resource.class);
         // TODO: specify memory and vcores information in property file
-        capability.setMemory(128);
+        capability.setMemory(256);
         capability.setVirtualCores(1);
 
         LOG.info("Split source file into chunks for processing");
         FileSplitter splitter = new FileSplitter();
         FileSystem fileSystem = FileSystem.get(conf);
+        LOG.info("File system: " + fileSystem.toString());
         List<FileSplitter.FileChunk> chunks = splitter.split(fileSystem, sourceDir, numOfContainers);
         numOfContainers = Math.min(numOfContainers, chunks.size());
 

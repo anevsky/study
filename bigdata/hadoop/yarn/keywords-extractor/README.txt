@@ -21,6 +21,8 @@ Output directory must exist.
 =========
 Notes
 =========
+Application uses Java 8 features and is expected to be build with JDK 1.8
+
 Implemented features:
 1) Client starts ApplicationMaster on one of the nodes
 2) ApplicationMaster allocates a number of containers. Number of containers is equal or less than number of containers

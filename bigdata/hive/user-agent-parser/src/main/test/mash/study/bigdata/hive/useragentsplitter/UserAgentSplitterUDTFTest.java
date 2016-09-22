@@ -57,8 +57,8 @@ public class UserAgentSplitterUDTFTest {
         Object[] objects = splitter.splitUserAgent(userAgentString);
 
         assertThat("UserAgent Browser type", "Browser", equalTo(objects[0].toString()));
-        assertThat("UserAgent Browser name", "Chrome 21", equalTo(objects[1].toString()));
-        assertThat("UserAgent Operating system", "Windows 7", equalTo(objects[2].toString()));
+        assertThat("UserAgent Browser name", "Chrome", equalTo(objects[1].toString()));
+        assertThat("UserAgent Operating system", "Windows", equalTo(objects[2].toString()));
         assertThat("UserAgent Device type", "Computer", equalTo(objects[3].toString()));
     }
 

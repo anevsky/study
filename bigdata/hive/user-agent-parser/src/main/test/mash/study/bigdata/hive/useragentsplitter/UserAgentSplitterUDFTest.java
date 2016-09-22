@@ -80,8 +80,9 @@ public class UserAgentSplitterUDFTest {
 
         assertThat("Array is of lenght 4", userAgent.length, is(4));
         assertThat("Type is correct", userAgent[0].toString(), is("Browser"));
-        assertThat("Browser is correct", userAgent[1].toString(), is("Internet Explorer 7"));
-        assertThat("OS is correct", userAgent[2].toString(), is("Windows XP"));
+        assertThat("Browser is correct", userAgent[1].toString(), is("Internet Explorer"));
+        assertThat("OS is correct", userAgent[2].toString(), is("Windows"));
         assertThat("Device is correct", userAgent[3].toString(), is("Computer"));
+
     }
 }

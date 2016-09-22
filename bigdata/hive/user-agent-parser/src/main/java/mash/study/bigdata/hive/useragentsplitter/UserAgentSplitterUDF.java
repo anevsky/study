@@ -66,8 +66,8 @@ public class UserAgentSplitterUDF extends GenericUDF {
             UserAgent userAgent = new UserAgent(userAgentString);
 
             columns[0] = userAgent.getBrowser().getBrowserType().getName();
-            columns[1] = userAgent.getBrowser().getName();
-            columns[2] = userAgent.getOperatingSystem().getName();
+            columns[1] = userAgent.getBrowser().getGroup().getName();
+            columns[2] = userAgent.getOperatingSystem().getGroup().getName();
             columns[3] = userAgent.getOperatingSystem().getDeviceType().getName();
         }
         return columns;

@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasEntry;
 import static org.junit.Assert.assertThat;
 
 public class TagsInterceptorTest {
@@ -29,6 +30,7 @@ public class TagsInterceptorTest {
         Event intercept = tagsInterceptor.intercept(event);
         String newEventBody = new String(intercept.getBody());
         assertThat("Body is enriched correctly", newEventBody, is(equalTo(finalEventBody)));
+        assertThat("Header contains marker that tags are set", event.getHeaders(), hasEntry("tags", "set"));
     }
 
     @Test
@@ -44,5 +46,6 @@ public class TagsInterceptorTest {
         Event intercept = tagsInterceptor.intercept(event);
         String newEventBody = new String(intercept.getBody());
         assertThat("Body is enriched correctly", newEventBody, is(equalTo(finalEventBody)));
+        assertThat("Header contains marker that tags are not set", event.getHeaders(), hasEntry("tags", "empty"));
     }
 }

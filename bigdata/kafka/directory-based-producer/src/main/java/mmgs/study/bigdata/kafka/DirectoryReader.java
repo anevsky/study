@@ -1,15 +1,16 @@
 package mmgs.study.bigdata.kafka;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringJoiner;
 
 // TODO: properly handle exceptions
 public class DirectoryReader {
@@ -36,7 +37,11 @@ public class DirectoryReader {
     }
 
     private void initializeReader(Path file) throws IOException {
-        reader = Files.newBufferedReader(file);
+        FileInputStream input = new FileInputStream(file.toFile());
+        CharsetDecoder decoder = Charset.forName("UTF-8").newDecoder();
+        decoder.onMalformedInput(CodingErrorAction.IGNORE);
+        InputStreamReader isReader = new InputStreamReader(input, decoder);
+        reader = new BufferedReader(isReader);
     }
 
     // TODO: investigate if multi-threaded approach is required

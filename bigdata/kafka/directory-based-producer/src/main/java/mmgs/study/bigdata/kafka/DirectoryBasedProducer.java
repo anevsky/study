@@ -33,13 +33,16 @@ public class DirectoryBasedProducer {
     // Directory for data source
     private String sourceDir;
 
+    private Boolean verbose;
+
     public DirectoryBasedProducer(
-            Properties producerProps, String topic, int throughput, String sourceDir) {
+            Properties producerProps, String topic, int throughput, String sourceDir, Boolean verbose) {
 
         this.topic = topic;
         this.throughput = throughput;
         this.producer = new KafkaProducer<>(producerProps);
         this.sourceDir = sourceDir;
+        this.verbose = verbose;
     }
 
     /**
@@ -98,6 +101,15 @@ public class DirectoryBasedProducer {
                 .dest("sourceDir")
                 .help("Where to read data from");
 
+        parser.addArgument("--verbose")
+                .action(store())
+                .required(false)
+                .type(Boolean.class)
+                .choices(true, false)
+                .metavar("VERBOSE")
+                .dest("verbose")
+                .help("Whether to spool messages to console (true/false)");
+
         return parser;
     }
 
@@ -117,6 +129,7 @@ public class DirectoryBasedProducer {
             int throughput = res.getInt("throughput");
             String configFile = res.getString("producer.config");
             String sourceDir = res.getString("sourceDir");
+            Boolean verbose = res.getBoolean("verbose");
 
             Properties producerProps = new Properties();
             producerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, res.getString("brokerList"));
@@ -133,7 +146,10 @@ public class DirectoryBasedProducer {
                 }
             }
 
-            producer = new DirectoryBasedProducer(producerProps, topic, throughput, sourceDir);
+            if (verbose == null) {
+                verbose = false;
+            }
+            producer = new DirectoryBasedProducer(producerProps, topic, throughput, sourceDir, verbose);
 
         } catch (ArgumentParserException e) {
             if (args.length == 0) {
@@ -203,16 +219,18 @@ public class DirectoryBasedProducer {
             this.value = value;
         }
 
-        // TODO: remove spooling to console
         public void onCompletion(RecordMetadata recordMetadata, Exception e) {
             synchronized (System.out) {
                 if (e == null) {
                     DirectoryBasedProducer.this.numAcked++;
-                    System.out.println(successString(recordMetadata, this.key, this.value, System.currentTimeMillis()));
+                    if (verbose) {
+                        System.out.println(successString(recordMetadata, this.key, this.value, System.currentTimeMillis()));
+                    }
                 } else {
                     System.out.println(errorString(e, this.key, this.value, System.currentTimeMillis()));
                 }
             }
+
         }
     }
 
@@ -267,5 +285,5 @@ public class DirectoryBasedProducer {
             }
             producer.send(null, line);
         }
-}
+    }
 }

@@ -17,6 +17,7 @@ public class TagsInterceptor implements Interceptor {
     private static final String tagsFileName = "user.profile.tags.us.txt.out";
     private static Map<String, String> tagsMap = new HashMap<>();
     private static String fileDelimiter = "\t";
+    private static int timePosition = 1;
 
     static {
         BufferedReader br = new BufferedReader(new InputStreamReader((TagsInterceptor.class.getClassLoader().getResourceAsStream(tagsFileName))));
@@ -45,7 +46,6 @@ public class TagsInterceptor implements Interceptor {
 
     private static String appendTags(String s, String tags) {
         return s.trim() + fileDelimiter + tags;
-
     }
 
     @Override
@@ -61,6 +61,7 @@ public class TagsInterceptor implements Interceptor {
         } else {
             headers.put("tags", "empty");
         }
+        headers.put("click_date", splittedBody[timePosition].substring(0, 8));
         eventBody = appendTags(eventBody, tags);
         event.setBody(eventBody.getBytes());
         event.setHeaders(headers);

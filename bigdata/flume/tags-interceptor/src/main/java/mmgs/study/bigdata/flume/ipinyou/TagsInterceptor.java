@@ -58,10 +58,10 @@ public class TagsInterceptor implements Interceptor {
 
         if (!"".equals(tags)) {
             headers.put("tags", "set");
+            headers.put("click_date", splittedBody[timePosition].substring(0, 8));
         } else {
             headers.put("tags", "empty");
         }
-        headers.put("click_date", splittedBody[timePosition].substring(0, 8));
         eventBody = appendTags(eventBody, tags);
         event.setBody(eventBody.getBytes());
         event.setHeaders(headers);

@@ -1,6 +1,5 @@
 package mmgs.study.bigdata.spark;
 
-import com.sun.javafx.collections.UnmodifiableObservableMap;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
@@ -18,6 +17,7 @@ public class FBEventData implements Serializable {
     private static final DateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
 
     private String eventId;
+    private String sourceKeyword;
     private String date;
     private String city;
     private Integer visitorsAmt;
@@ -29,6 +29,14 @@ public class FBEventData implements Serializable {
 
     public void setEventId(String eventId) {
         this.eventId = eventId;
+    }
+
+    public String getSourceKeyword() {
+        return sourceKeyword;
+    }
+
+    public void setSourceKeyword(String sourceKeyword) {
+        this.sourceKeyword = sourceKeyword;
     }
 
     public String getDate() {
@@ -60,7 +68,7 @@ public class FBEventData implements Serializable {
     }
 
     public Map<String, Integer> getKeywords() {
-        return Collections.unmodifiableMap(keywords);
+        return keywords != null ? Collections.unmodifiableMap(keywords) : null;
     }
 
     public void setKeywords(String text) {

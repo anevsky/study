@@ -1,6 +1,7 @@
 package mmgs.study.bigdata.spark
 
 import it.nerdammer.spark.hbase._
+import it.nerdammer.spark.hbase.conversion.FieldWriter
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.kafka.KafkaUtils
 import org.apache.spark.streaming.{Seconds, StreamingContext}
@@ -43,4 +44,16 @@ object KafkaToHBaseNerdammer {
     ssc.start()
     ssc.awaitTermination()
   }
+
+  implicit def clickInfoWriter: FieldWriter[ClickInfo] = new FieldWriter[ClickInfo] {
+    override def map (data: ClickInfo): HBaseData =
+      Seq (
+        Some (Bytes.toBytes (data.id) ),
+        Some (Bytes.toBytes (data.prg) ),
+        Some (Bytes.toBytes (data.name) )
+      )
+
+    override def columns = Seq ("prg", "name")
+  }
+  )
 }

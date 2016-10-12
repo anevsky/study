@@ -45,12 +45,6 @@
             <version>${spark.version}</version>
             <scope>provided</scope>
         </dependency>
-<!--        <dependency>
-            <groupId>org.apache.phoenix</groupId>
-            <artifactId>phoenix-spark</artifactId>
-            <version>${phoenix.version}</version>
-            <scope>provided</scope>
-        </dependency>-->
         <dependency>
             <groupId>it.nerdammer.bigdata</groupId>
             <artifactId>spark-hbase-connector_${scala.properties.version}</artifactId>

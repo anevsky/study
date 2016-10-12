@@ -1,11 +1,14 @@
 package mmgs.study.bigdata.spark
 
 import it.nerdammer.spark.hbase._
-import it.nerdammer.spark.hbase.conversion.FieldWriter
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.kafka.KafkaUtils
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 
+/**
+  * Code used for experiments
+  * It is preserved as a base point for future enhancements based on actial dataset
+  */
 object KafkaToHBaseNerdammer {
   def main(args: Array[String]) {
     if (args.length < 2) {
@@ -32,7 +35,6 @@ object KafkaToHBaseNerdammer {
     val lines = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](
       ssc, kafkaParams, topicsSet)*/
 
-
     wordCounts.foreachRDD(rdd =>
       rdd.toHBaseTable("simpleTable")
         .inColumnFamily("value")
@@ -44,16 +46,4 @@ object KafkaToHBaseNerdammer {
     ssc.start()
     ssc.awaitTermination()
   }
-
-  implicit def clickInfoWriter: FieldWriter[ClickInfo] = new FieldWriter[ClickInfo] {
-    override def map (data: ClickInfo): HBaseData =
-      Seq (
-        Some (Bytes.toBytes (data.id) ),
-        Some (Bytes.toBytes (data.prg) ),
-        Some (Bytes.toBytes (data.name) )
-      )
-
-    override def columns = Seq ("prg", "name")
-  }
-  )
 }

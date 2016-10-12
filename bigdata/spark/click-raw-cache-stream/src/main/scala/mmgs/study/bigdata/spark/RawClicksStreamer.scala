@@ -1,9 +1,37 @@
 package mmgs.study.bigdata.spark
 
 import it.nerdammer.spark.hbase._
+import it.nerdammer.spark.hbase.conversion.{FieldWriter, FieldWriterProxy}
 import org.apache.spark.SparkConf
-import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.streaming.kafka.KafkaUtils
+import org.apache.spark.streaming.{Seconds, StreamingContext}
+
+case class ClickInfo(bidId: String,
+                     timestamp: String,
+                     ipinyouId: String,
+                     userAgent: String,
+                     ip: String,
+                     region: String,
+                     city: String,
+                     payingPrice: String,
+                     biddingPrice: String,
+                     streamId: String,
+                     userTags: String
+                    )
+
+case class ClickAdInfo(
+                        adExchange: String,
+                        domain: String,
+                        url: String,
+                        anonimousUrlId: String,
+                        adSlotId: String,
+                        adSlotWidth: String,
+                        adSlotHeight: String,
+                        adSlotVisibility: String,
+                        adSlotFormat: String,
+                        creativeId: String,
+                        advertiserId: String
+                      )
 
 object RawClicksStreamer {
   def main(args: Array[String]) {
@@ -21,42 +49,90 @@ object RawClicksStreamer {
 
     val lines = KafkaUtils.createStream(ssc, zkQuorum, "my-consumer-group", topicMap).map(_._2)
 
-    val clicks = lines.map(l => l.split("\t")).map(i => (i(1) + i(2) + i(0) //timestamp + ipinyouId + bidId
-      , i(0) //bidId
-      , i(1) //timestamp
-      , i(2) //ipinyouId
-      , i(3) //user-agent
-      , i(4) //ip
-      , i(5) //region
-      , i(6) //city
-      , i(16) //payingPrice
-      , i(18) //biddingPrice
-      , i(21) //streamId
-
-      , i(7) //adExchange
-      , i(8) //domain
-      , i(9) //url
-      , i(10) //anonimousUrlId
-      , i(11) //adSlotId
-      , i(12) //adSlotWidth
-      , i(13) //adSlotHeight
-      , i(14) //adSlotVisibility
-      , i(15) //adSlotFormat
-      , i(17) //creativeId
-      , i(19) //advertiserId
-
-      , i(20) //userTags
-      ))
+    val clicks = lines.map(l => l.split("\t"))
+      .map(i => (i(1) + i(2) + i(0) //timestamp + ipinyouId + bidId
+        , new ClickInfo(i(0) //bidId
+        , i(1) //timestamp
+        , i(2) //ipinyouId
+        , i(3) //user-agent
+        , i(4) //ip
+        , i(5) //region
+        , i(6) //city
+        , i(16) //payingPrice
+        , i(18) //biddingPrice
+        , i(21) //streamId
+        , i(20)) //userTags
+        , new ClickAdInfo(i(7) //adExchange
+        , i(8) //domain
+        , i(9) //url
+        , i(10) //anonimousUrlId
+        , i(11) //adSlotId
+        , i(12) //adSlotWidth
+        , i(13) //adSlotHeight
+        , i(14) //adSlotVisibility
+        , i(15) //adSlotFormat
+        , i(17) //creativeId
+        , i(19)) //advertiserId
+        ))
 
     clicks.foreachRDD(rdd =>
       rdd.toHBaseTable("click.raw")
-        .inColumnFamily("value")
-        .toColumns("value")
+        .inColumnFamily("click")
+        .toColumns("bid"
+          , "time"
+          , "ipyId"
+          , "userAgent"
+          , "ip"
+          , "region"
+          , "city"
+          , "payPrice"
+          , "bidPrice"
+          , "stream"
+          , "tags"
+          , "ad:adExch"
+          , "ad:domain"
+          , "ad:url"
+          , "ad:anonUrl"
+          , "ad:adSlot"
+          , "ad:adSlotW"
+          , "ad:adSlotH"
+          , "ad:adSlotV"
+          , "ad:adSlotF"
+          , "ad:creativeId"
+          , "ad:adId")
         .save()
     )
 
-    wordCounts.print()
+    clicks.print()
     ssc.start()
     ssc.awaitTermination()
+  }
+
+  implicit def clickInfoWriter: FieldWriter[ClickInfo] = new FieldWriterProxy[ClickInfo, (String, String, String, String, String, String, String, String, String, String, String)] {
+    override def convert(data: ClickInfo) = (data.bidId
+      , data.timestamp
+      , data.ipinyouId
+      , data.userAgent
+      , data.ip
+      , data.region
+      , data.city
+      , data.payingPrice
+      , data.biddingPrice
+      , data.streamId
+      , data.userTags)
+  }
+
+  implicit def clickAdInfoWriter: FieldWriter[ClickAdInfo] = new FieldWriterProxy[ClickAdInfo, (String, String, String, String, String, String, String, String, String, String, String)] {
+    override def convert(data: ClickAdInfo) = (data.adExchange,
+      data.domain,
+      data.url,
+      data.anonimousUrlId,
+      data.adSlotId,
+      data.adSlotWidth,
+      data.adSlotHeight,
+      data.adSlotVisibility,
+      data.adSlotFormat,
+      data.creativeId,
+      data.advertiserId)
   }
 }

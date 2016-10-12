@@ -6,33 +6,6 @@ import org.apache.spark.SparkConf
 import org.apache.spark.streaming.kafka.KafkaUtils
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 
-case class ClickInfo(bidId: String,
-                     timestamp: String,
-                     ipinyouId: String,
-                     userAgent: String,
-                     ip: String,
-                     region: String,
-                     city: String,
-                     payingPrice: String,
-                     biddingPrice: String,
-                     streamId: String,
-                     userTags: String
-                    )
-
-case class ClickAdInfo(
-                        adExchange: String,
-                        domain: String,
-                        url: String,
-                        anonimousUrlId: String,
-                        adSlotId: String,
-                        adSlotWidth: String,
-                        adSlotHeight: String,
-                        adSlotVisibility: String,
-                        adSlotFormat: String,
-                        creativeId: String,
-                        advertiserId: String
-                      )
-
 object RawClicksStreamer {
   def main(args: Array[String]) {
     if (args.length < 2) {
@@ -103,7 +76,6 @@ object RawClicksStreamer {
         .save()
     )
 
-    clicks.print()
     ssc.start()
     ssc.awaitTermination()
   }

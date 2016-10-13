@@ -23,7 +23,7 @@ object RawClicksStreamer {
     val lines = KafkaUtils.createStream(ssc, zkQuorum, "my-consumer-group", topicMap).map(_._2)
 
     val clicks = lines.map(l => l.split("\t"))
-      .map(i => (i(1) + i(2) + i(0) //timestamp + ipinyouId + bidId
+      .map(i => (i(2) + i(1) //ipinyouId + timestamp
         , new ClickInfo(i(0) //bidId
         , i(1) //timestamp
         , i(2) //ipinyouId

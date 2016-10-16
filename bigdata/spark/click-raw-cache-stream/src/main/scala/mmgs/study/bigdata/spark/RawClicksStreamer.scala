@@ -22,9 +22,9 @@ object RawClicksStreamer {
 
     val lines = KafkaUtils.createStream(ssc, zkQuorum, "my-consumer-group", topicMap).map(_._2)
 
-    val clicks = lines.map(l => l.split("\t"))
-      .map(i => (i(2) + i(1) //ipinyouId + timestamp
-        , new ClickInfo(i(0) //bidId
+    val clicks = lines.map(l => l.split("\t")).filter(i => !i(2).equals("null"))
+      .map(i => ((i(2) + i(1)).hashCode //ipinyouId + timestamp
+        , ClickInfo(i(0) //bidId
         , i(1) //timestamp
         , i(2) //ipinyouId
         , i(3) //user-agent
@@ -35,7 +35,7 @@ object RawClicksStreamer {
         , i(18) //biddingPrice
         , i(21) //streamId
         , i(20)) //userTags
-        , new ClickAdInfo(i(7) //adExchange
+        , ClickAdInfo(i(7) //adExchange
         , i(8) //domain
         , i(9) //url
         , i(10) //anonimousUrlId
@@ -90,7 +90,7 @@ object RawClicksStreamer {
       , data.city
       , data.payingPrice
       , data.biddingPrice
-      , data.streamId
+      , data.logType
       , data.userTags)
   }
 

@@ -8,19 +8,24 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
 
 object RawClicksStreamer {
   def main(args: Array[String]) {
-    if (args.length < 2) {
-      System.err.println("Usage: RawClicksStreamer <zkQuorum>, <group>, <topics>, <numThreads>")
+    if (args.length < 4) {
+      System.err.println("Usage: RawClicksStreamer <zkQuorum>, <group>, <topics>, <numThreads>, <checkpointDir>")
       System.exit(1)
     }
 
-    //TODO: WAL, checkpointing etc.
     val sparkConf = new SparkConf().setAppName("RawClicksStreamer")
+      .set("spark.streaming.receiver.writeAheadLog.enable", "true")
+      .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+    sparkConf.registerKryoClasses(Array(classOf[ClickInfo], classOf[ClickAdInfo]))
+
+    val Array(zkQuorum, group, topics, numThreads, checkpointDir) = args
+
     val ssc = new StreamingContext(sparkConf, Seconds(1))
+    ssc.checkpoint(checkpointDir)
 
-    val Array(zkQuorum, group, topics, numThreads) = args
-    val topicMap = topics.split(",").map((_, 1)).toMap
+    val topicMap = topics.split(",").map((_, numThreads.toInt)).toMap
 
-    val lines = KafkaUtils.createStream(ssc, zkQuorum, "my-consumer-group", topicMap).map(_._2)
+    val lines = KafkaUtils.createStream(ssc, zkQuorum, group, topicMap).map(_._2)
 
     val clicks = lines.map(l => l.split("\t")).filter(i => !i(2).equals("null"))
       .map(i => ((i(2) + i(1)).hashCode //ipinyouId + timestamp
@@ -48,33 +53,35 @@ object RawClicksStreamer {
         , i(19)) //advertiserId
         ))
 
-    clicks.foreachRDD(rdd =>
-      rdd.toHBaseTable("click.raw")
-        .inColumnFamily("click")
-        .toColumns("bid"
-          , "time"
-          , "ipyId"
-          , "userAgent"
-          , "ip"
-          , "region"
-          , "city"
-          , "payPrice"
-          , "bidPrice"
-          , "stream"
-          , "tags"
-          , "ad:adExch"
-          , "ad:domain"
-          , "ad:url"
-          , "ad:anonUrl"
-          , "ad:adSlot"
-          , "ad:adSlotW"
-          , "ad:adSlotH"
-          , "ad:adSlotV"
-          , "ad:adSlotF"
-          , "ad:creativeId"
-          , "ad:adId")
-        .save()
-    )
+    clicks.foreachRDD { rdd =>
+      if (!rdd.isEmpty()) {
+        rdd.toHBaseTable("click_raw")
+          .inColumnFamily("c")
+          .toColumns("bid"
+            , "ts"
+            , "ipyId"
+            , "userAgent"
+            , "ip"
+            , "region"
+            , "city"
+            , "payP"
+            , "bidP"
+            , "log"
+            , "tags"
+            , "ad:exch"
+            , "ad:domain"
+            , "ad:url"
+            , "ad:anonUrl"
+            , "ad:slot"
+            , "ad:slotW"
+            , "ad:slotH"
+            , "ad:slotV"
+            , "ad:slotF"
+            , "ad:creativeId"
+            , "ad:id")
+          .save()
+      }
+    }
 
     ssc.start()
     ssc.awaitTermination()

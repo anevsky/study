@@ -54,10 +54,6 @@ object AggregatedClicksStreamer {
         val logTypes = LogType.getInstance(rdd.sparkContext)
         val tags = Tags.getInstance(rdd.sparkContext)
 
-        /*
-      •	Session behavior, one record for session with all clicked, searched, bought tags in a TOKEN_MAP(KEYWORD_1, AMOUNT_1... KEYWORD_N, AMOUNT_N).
-       */
-
         val citiesDF = cities.value.map(i => (i._1, i._2, i._3)).toDF("id", "city", "stateId")
         val statesDF = states.value.map(i => (i._1, i._2)).toDF("id", "state")
         val logTypeDF = logTypes.value.map(i => (i._1, i._2)).toDF("id", "logType")
@@ -70,13 +66,14 @@ object AggregatedClicksStreamer {
           .select(clicksDF("bidId"), clicksDF("timestamp"), clicksDF("ipinyouId"), clicksDF("userAgent")
             , clicksDF("ip"), clicksDF("region"), citiesDF("city"), statesDF("state"), clicksDF("payingPrice"), clicksDF("biddingPrice")
             , logTypeDF("logType"), tagsDF("tag"))
-        //.show
+
+        clicksFullDF.show
 
         val clicksRDD = clicksFullDF.rdd
           .map(i => ((i(2).toString + i(1).toString + i(11).toString).hashCode, ClickFull(i(0).toString, i(1).toString, i(2).toString, getDeviceType(i(3).toString), i(4).toString, i(5).toString, i(6).toString, i(7).toString, i(8).toString, i(9).toString, i(10).toString, i(11).toString)))
 
-        clicksRDD.toHBaseTable("click.j")
-          .inColumnFamily("click")
+        clicksRDD.toHBaseTable("click_full")
+          .inColumnFamily("c")
           .toColumns("bidId"
             , "ts"
             , "ipyId"
@@ -130,9 +127,9 @@ object Cities {
     if (instance == null) {
       synchronized {
         if (instance == null) {
-          val cities: HBaseReaderBuilder[(String, String, String)] = sc.hbaseTable[(String, String, String)]("city.us")
+          val cities: HBaseReaderBuilder[(String, String, String)] = sc.hbaseTable[(String, String, String)]("city_us")
             .select("city", "stateId")
-            .inColumnFamily("city")
+            .inColumnFamily("c")
 
           instance = sc.broadcast(cities)
         }
@@ -150,9 +147,9 @@ object States {
     if (instance == null) {
       synchronized {
         if (instance == null) {
-          val cities: HBaseReaderBuilder[(String, String)] = sc.hbaseTable[(String, String)]("state.us")
+          val cities: HBaseReaderBuilder[(String, String)] = sc.hbaseTable[(String, String)]("state_us")
             .select("state")
-            .inColumnFamily("state")
+            .inColumnFamily("s")
 
           instance = sc.broadcast(cities)
         }
@@ -170,9 +167,9 @@ object LogType {
     if (instance == null) {
       synchronized {
         if (instance == null) {
-          val cities: HBaseReaderBuilder[(String, String)] = sc.hbaseTable[(String, String)]("log.type")
+          val cities: HBaseReaderBuilder[(String, String)] = sc.hbaseTable[(String, String)]("log_type")
             .select("type")
-            .inColumnFamily("type")
+            .inColumnFamily("t")
 
           instance = sc.broadcast(cities)
         }
@@ -190,9 +187,9 @@ object Tags {
     if (instance == null) {
       synchronized {
         if (instance == null) {
-          val cities: HBaseReaderBuilder[(String, String)] = sc.hbaseTable[(String, String)]("user.profile.tag.us")
+          val cities: HBaseReaderBuilder[(String, String)] = sc.hbaseTable[(String, String)]("tag_us")
             .select("keywords")
-            .inColumnFamily("keywords")
+            .inColumnFamily("kw")
 
           instance = sc.broadcast(cities)
         }

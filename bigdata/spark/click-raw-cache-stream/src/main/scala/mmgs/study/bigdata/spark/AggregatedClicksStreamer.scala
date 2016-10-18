@@ -23,8 +23,6 @@ object AggregatedClicksStreamer {
     val Array(zkQuorum, group, topics, numThreads) = args
     val topicMap = topics.split(",").map((_, 1)).toMap
 
-
-
     val lines: DStream[String] = KafkaUtils.createStream(ssc, zkQuorum, "my-consumer-group", topicMap).map(_._2)
 
     val rawClicks = lines.map(l => l.split("\t")).filter(i => !i(2).equals("null"))
@@ -47,8 +45,6 @@ object AggregatedClicksStreamer {
         import sqlContext.implicits._
         val clicksDF = rdd.toDF
 
-//        clicksDF.show
-
         val cities = Cities.getInstance(rdd.sparkContext)
         val states = States.getInstance(rdd.sparkContext)
         val logTypes = LogType.getInstance(rdd.sparkContext)
@@ -66,8 +62,6 @@ object AggregatedClicksStreamer {
           .select(clicksDF("bidId"), clicksDF("timestamp"), clicksDF("ipinyouId"), clicksDF("userAgent")
             , clicksDF("ip"), clicksDF("region"), citiesDF("city"), statesDF("state"), clicksDF("payingPrice"), clicksDF("biddingPrice")
             , logTypeDF("logType"), tagsDF("tag"))
-
-        clicksFullDF.show
 
         val clicksRDD = clicksFullDF.rdd
           .map(i => ((i(2).toString + i(1).toString + i(11).toString).hashCode, ClickFull(i(0).toString, i(1).toString, i(2).toString, getDeviceType(i(3).toString), i(4).toString, i(5).toString, i(6).toString, i(7).toString, i(8).toString, i(9).toString, i(10).toString, i(11).toString)))

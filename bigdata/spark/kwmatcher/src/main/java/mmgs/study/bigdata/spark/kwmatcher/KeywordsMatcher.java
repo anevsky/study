@@ -9,6 +9,7 @@ import mmgs.study.bigdata.spark.kwmatcher.model.WeightedKeyword;
 import mmgs.study.bigdata.spark.kwmatcher.storage.HBaseStorage;
 import mmgs.study.bigdata.spark.kwmatcher.storage.Storage;
 import mmgs.study.bigdata.spark.kwmatcher.tokenizer.KeywordsExtractor;
+import mmgs.study.bigdata.spark.kwmatcher.utils.Utils;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
@@ -41,8 +42,7 @@ public class KeywordsMatcher {
                 .registerKryoClasses(new Class[]{TaggedClick.class, TaggedSN.class});
 
         JavaSparkContext javaSparkContext = new JavaSparkContext(sparkConf);
-        // TODO: move sql context to reader/writer
-        SQLContext sqlContext = new org.apache.spark.sql.SQLContext(javaSparkContext);
+        SQLContext sqlContext = new SQLContext(javaSparkContext);
 
         // initialize meetup connection keys
         // Stub for keys
@@ -64,7 +64,8 @@ public class KeywordsMatcher {
         JavaPairRDD<TaggedClick, List<WeightedKeyword>> enrichedTaggedClicksRDD = taggedClicksRDD.flatMapToPair(new SNKeywordsMapper(crawler, keysArr));
 
         // combine clicks for identical
-        JavaPairRDD<TaggedClick, List<WeightedKeyword>> aggregatedTaggedClicksRDD = enrichedTaggedClicksRDD.reduceByKey(new SNKeywordsReducer());
+        JavaPairRDD<TaggedClick, List<WeightedKeyword>> aggregatedTaggedClicksRDD = enrichedTaggedClicksRDD
+                .reduceByKey((Function2<List<WeightedKeyword>, List<WeightedKeyword>, List<WeightedKeyword>>) (keywords1, keywords2) -> Utils.mergeKeywords(keywords1, keywords2));
 
         // convert to final dataset structure
         JavaRDD<TaggedSN> snTaggedRDD = aggregatedTaggedClicksRDD.map(new SNTaggedClickMapper());
@@ -78,17 +79,6 @@ public class KeywordsMatcher {
         // save as hive table
         // TODO: generate valid file name
         dataFrame.write().format("orc").option("header", "false").save("tstkw");
-    }
-
-    private static class SNKeywordsReducer implements Function2<List<WeightedKeyword>, List<WeightedKeyword>, List<WeightedKeyword>> {
-        @Override
-        public List<WeightedKeyword> call(List<WeightedKeyword> keywords1, List<WeightedKeyword> keywords2) throws Exception {
-            List<WeightedKeyword> keywords = new ArrayList<>();
-            keywords.addAll(keywords1);
-            keywords.addAll(keywords2);
-            keywords.sort(Comparator.comparing(WeightedKeyword::getFrequency).reversed());
-            return new ArrayList<>(keywords.subList(0, Math.min(10, keywords1.size() + keywords2.size())));
-        }
     }
 
     private static class SNKeywordsMapper implements PairFlatMapFunction<TaggedClick, TaggedClick, List<WeightedKeyword>> {
